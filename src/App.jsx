@@ -1,7 +1,6 @@
 import {Routes, Route, BrowserRouter} from 'react-router-dom';
 import './App.css';
-import React, {useContext, useEffect} from 'react';
-import {UserContext} from './contexts/UserContext';
+import React, {useEffect} from 'react';
 import UserForm from './components/UserForm';
 import Question from './components/Question';
 import Results from './components/Results';
