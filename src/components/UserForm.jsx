@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { UserContext } from './UserContext';
+import { UserContext } from '../contexts/UserContext'
 
 export default function UserForm() {
   const [inputName, setInputName] = useState('');
@@ -7,13 +7,23 @@ export default function UserForm() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    setName(inputName);  // Set the name in context
-    window.history.pushState({}, '', '/quiz');  // Change the URL without reloading the page
+    setName(inputName);  
+    window.history.pushState({}, '', '/quiz'); 
     const navEvent = new PopStateEvent('popstate');
-    window.dispatchEvent(navEvent);  // Dispatch a navigation event
+    window.dispatchEvent(navEvent);  
   }
 
   return (
-    // Add the form here
+    <form onSubmit={handleSubmit}>
+      <label>
+        What's your name?
+        <input
+          type="text"
+          value={inputName}
+          onChange={(e) => setInputName(e.target.value)}
+        />
+      </label>
+      <button type="submit">Start Quiz</button>
+    </form>
   );
 }
