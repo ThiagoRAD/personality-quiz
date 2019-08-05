@@ -82,9 +82,9 @@ function App() {
     <BrowserRouter>
       <UserProvider>
         <Routes>
-          <Route path='/' element={<UserForm />} />
+          <Route path='/personality-quiz' element={<UserForm />} />
           <Route
-            path='/quiz'
+            path='/personality-quiz/quiz'
             element={
               currentQuestionIndex < questions.length ? (
                 <Question question={questions[currentQuestionIndex].question} options={questions[currentQuestionIndex].options} onAnswer={handleAnswer} />
