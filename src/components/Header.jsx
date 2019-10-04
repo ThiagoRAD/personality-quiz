@@ -6,8 +6,8 @@ export const Header = () => {
     <h1>Which element Are You?</h1>
     <p>(based on completely random things)</p>
     <nav>
-      <Link to="/">Home</Link>
-      <Link to="/quiz">Quiz</Link>
+      <Link to="/personality-quiz">Home</Link>
+      <Link to="/personality-quiz/quiz">Quiz</Link>
     </nav>
   </header>
 }
