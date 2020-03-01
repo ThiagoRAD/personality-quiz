@@ -1,21 +1,24 @@
-import React from "react";
+import React, { useContext } from "react";
+import { UserContext } from '../contexts/UserContext'
 
-export default function Question({ question, options, onAnswer }) {
+export default function Results({ element, artwork }) {
+  const { name } = useContext(UserContext);
+
   return (
     <div>
-      <h2>{question}</h2>
-      {options.map(function (option) {
-        return (
-          <button
-            key={option}
-            onClick={function () {
-              onAnswer(option);
-            }}
-          >
-            {option}
-          </button>
-        );
-      })}
+      <p>
+        <strong>{name}</strong>, your element is: {element}
+      </p>
+      {artwork ? (
+        <div className="artwork">
+          <h2>{artwork.title}</h2>
+          {artwork.primaryImage && <img src={artwork.primaryImage} alt={artwork.title} />}
+          <p>{artwork.artistDisplayName}</p>
+          <p>{artwork.objectDate}</p>
+        </div>
+      ) : (
+        <p>No artwork found.</p>
+      )}
     </div>
   );
 }
