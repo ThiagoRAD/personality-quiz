@@ -8,7 +8,7 @@ export default function UserForm() {
   function handleSubmit(e) {
     e.preventDefault();
     setName(inputName);  
-    window.history.pushState({}, '', '/quiz'); 
+    window.history.pushState({}, '', '/personality-quiz/quiz'); 
     const navEvent = new PopStateEvent('popstate');
     window.dispatchEvent(navEvent);  
   }
