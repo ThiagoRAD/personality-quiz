@@ -5,6 +5,7 @@ import {UserContext} from './contexts/UserContext';
 import UserForm from './components/UserForm';
 import Question from './components/Question';
 import Results from './components/Results';
+import {UserProvider} from './components/UserProvider';
 
 const questions = [
   {
@@ -30,15 +31,12 @@ const elements = {
 function App() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = React.useState(0);
   const [answers, setAnswers] = React.useState([]);
-  const {setName} = useContext(UserContext);
-  const [element, setElement] = React.useState('');
   const [artwork, setArtwork] = React.useState(null);
 
   useEffect(
     function () {
       if (currentQuestionIndex === questions.length) {
         const selectedElement = determineElement(answers);
-        setElement(selectedElement);
         fetchArtwork(keywords[selectedElement]);
       }
     },
@@ -47,17 +45,13 @@ function App() {
 
   async function fetchArtwork(keyword) {
     try {
-      const response = await fetch(
-        `https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=${keyword}`
-      );
+      const response = await fetch(`https://collectionapi.metmuseum.org/public/collection/v1/search?hasImages=true&q=${keyword}`);
       const data = await response.json();
 
       if (data.objectIDs && data.objectIDs.length > 0) {
         const randomIndex = Math.floor(Math.random() * data.objectIDs.length);
         const objectID = data.objectIDs[randomIndex];
-        const artworkResponse = await fetch(
-          `https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectID}`
-        );
+        const artworkResponse = await fetch(`https://collectionapi.metmuseum.org/public/collection/v1/objects/${objectID}`);
         const artworkData = await artworkResponse.json();
         setArtwork(artworkData);
       } else {
@@ -69,14 +63,9 @@ function App() {
     }
   }
 
-
   function handleAnswer(answer) {
     setAnswers([...answers, answer]);
     setCurrentQuestionIndex(currentQuestionIndex + 1);
-  }
-
-  function handleUserFormSubmit(name) {
-    setName(name);
   }
 
   function determineElement(answers) {
@@ -92,19 +81,21 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<UserForm onSubmit={handleUserFormSubmit} />} />
-        <Route
-          path='/quiz'
-          element={
-            currentQuestionIndex < questions.length ? (
-              <Question question={questions[currentQuestionIndex].question} options={questions[currentQuestionIndex].options} onAnswer={handleAnswer} />
-            ) : (
-              <Results element={determineElement(answers)} artwork={artwork} />
-            )
-          }
-        />
-      </Routes>
+      <UserProvider>
+        <Routes>
+          <Route path='/' element={<UserForm />} />
+          <Route
+            path='/quiz'
+            element={
+              currentQuestionIndex < questions.length ? (
+                <Question question={questions[currentQuestionIndex].question} options={questions[currentQuestionIndex].options} onAnswer={handleAnswer} />
+              ) : (
+                <Results element={determineElement(answers)} artwork={artwork} />
+              )
+            }
+          />
+        </Routes>
+      </UserProvider>
     </BrowserRouter>
   );
 }
