@@ -17,7 +17,7 @@ export default function Results({ element, artwork }) {
           <p>{artwork.objectDate}</p>
         </div>
       ) : (
-        <p>No artwork found.</p>
+        <p>...</p>
       )}
     </div>
   );
